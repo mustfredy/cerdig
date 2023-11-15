@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Timed Google Form</title>
+</head>
+<body>
+
+<div id="timer"></div>
+
+<!-- Add an iframe to embed a Google Form -->
+<iframe id="googleForm" src="https://docs.google.com/forms/d/e/1FAIpQLSfi5XqSIeEH7Z-yzjt9JBFgop_tBca8j71isE3PLOlSWqQxBA/viewform" width="640" height="800" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
+
+<script>
+    // Set the end time for form submission (November 12, 12:00 PM)
+    const endTime = new Date('2023-11-11T23:00:00');
+    
+    // Calculate the initial time in seconds based on the difference between current time and endTime
+    let timeInSeconds = Math.floor((endTime - new Date()) / 1000);
+    
+    function updateTimer() {
+      // Display the current time
+      document.getElementById('timer').innerHTML = formatTime(timeInSeconds);
+    
+      // Decrease the time by 1 second
+      timeInSeconds--;
+    
+      // Check if the timer has reached 0 or if the current time is past the endTime
+      if (timeInSeconds < 0) {
+        clearInterval(timerInterval); // Stop the timer
+        document.getElementById('timer').innerHTML = 'Form submission closed.';
+        // Disable the form by setting the src attribute to an empty string
+        document.getElementById('googleForm').src = '';
+      }
+    }
+    
+    // Call the updateTimer function every second (1000 milliseconds)
+    let timerInterval = setInterval(updateTimer, 1000);
+    
+    // Function to format time as MM:SS
+    function formatTime(seconds) {
+      const minutes = Math.floor(seconds / 60);
+      const remainingSeconds = seconds % 60;
+      return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+    }
+    </script>
+    
+    </body>
+    </html>
